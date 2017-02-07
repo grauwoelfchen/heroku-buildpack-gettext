@@ -43,7 +43,11 @@ cd gettext
 echo "-----> Compiling gettext"
 if [ -f configure ]; then
   echo "-----> Configuring"
-  ./configure --prefix=${GETTEXT_PREFIX} 2>&1 | indent
+  LDFLAGS="-L${GETTEXT_PREFIX}/lib" CPPFLAGS="-I${GETTEXT_PREFIX}/include" \
+    ./configure \
+    --prefix=${GETTEXT_PREFIX} \
+    --oldincludedir=${GETTEXT_PREFIX}/include \
+    2>&1 | indent
 fi
 make
 make install
