@@ -1,0 +1,62 @@
+#!/usr/bin/env sh
+# % bin/compile <build-dir> <cache-dir> <env-dir>
+
+set -e
+
+BIN_DIR=$(cd $(dirname $0); pwd)
+ROOT_DIR=$(dirname $BIN_DIR)
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+GETTEXT_PREFIX=${HOME}/.gettext/usr/local
+GETTEXT_VERSION=0.19.8.1
+GETTEXT_LOCATION=https://ftp.gnu.org/pub/gnu/gettext/\
+gettext-${GETTEXT_VERSION}.tar.gz
+
+
+if [ -d ${CACHE_DIR}/.gettext/usr/local ]; then
+  echo "GNU gettext is already installed"
+  exit 0
+fi
+
+
+cd $BUILD_DIR
+
+echo "-----> Fetching gettext"
+curl -sLO --max-time 45 --location "${GETTEXT_LOCATION}"
+tar zxf gettext-${GETTEXT_VERSION}.tar.gz
+mv gettext-${GETTEXT_VERSION} gettext
+
+cd gettext
+
+echo "-----> Compiling gettext"
+if [ -f configure ]; then
+  echo "-----> Configuring"
+  ./configure --prefix=${GETTEXT_PREFIX} 2>&1 | ident
+fi
+make
+make install
+
+cd $BUILD_DIR
+
+
+"${GETTEXT_PREFIX}/bin/gettext" --version | ident
+
+echo "-----> Installing profile script"
+mkdir -p "${BUILD_DIR}/.profile.d"
+cp ${ROOT_DIR}/profile/* ${BUILD_DIR}/.profile.d/
+
+
+# https://devcenter.heroku.com/articles/buildpack-api#caching
+# > Heroku users can use the heroku-repo plugin to clear the build cache
+# > created by the buildpack they use for their app
+mkdir -p $CACHE_DIR
+
+rm -fr $CACHE_DIR/.gettext
+mkdir -p $CACHE_DIR/.gettext
+
+cp -R ${HOME}/.gettext $CACHE_DIR/

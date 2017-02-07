@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# % bin/detect <build-dir>
+
+set -e
+
+echo "GNU gettext"
+exit 0
