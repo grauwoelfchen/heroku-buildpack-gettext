@@ -1,11 +1,35 @@
 # Heroku buildpack: GNU gettext
 
+This buildpack compile GNU gettext with gettext-tools from official gettext  
+source code.
+As second time to build, it checks cache.
+
+Following binaries are installed.
+
+```
+TODO
+```
+
+## GNU gettext
+
+`0.19.8.1`
+
+```zsh
+% heroku run gettext --version
+Runnig gettext --version on XXXX...up, run.NNNN (XXXX)
+gettext (GNU gettext-runtime) 0.19.8.1
+Copyright (C) 1995-1997, 2000-2007 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Written by Ulrich Drepper.
+```
 
 ## Usage
 
 ```zsh
 % cat .buildpacks
-https://gitlab.com/grauwoelfchen/heroku-buildpack-gettext#v0.1
+https://gitlab.com/grauwoelfchen/heroku-buildpack-gettext#0.19.8.1
 ...
 
 % git push heroku release:master
@@ -14,15 +38,58 @@ remote: Compressing source files... done.
 remote: Building source:
 remote:
 remote: -----> Multipack app detected
-remote: =====> Downloading Buildpack: https://gitlab.com/grauwoelfchen/heroku-buildpack-gettext
+remote: =====> Downloading Buildpack: https://gitlab.com/grauwoelfchen/
+heroku-buildpack-gettext
 remote: =====> Detected Framework: GNU gettext
 ...
 ```
 
+## Test
+
+Test run on docker image.  
+This uses [heroku-buildpack-testrunner](
+    https://github.com/heroku/heroku-buildpack-testrunner).
+
+```zsh
+% sh ./test/suite.sh
+
+BUILDPACK: /app/buildpack
+  TEST SUITE: compile_test.sh
+
+  Ran 0 tests.
+
+  OK
+  0 SECONDS
+
+  TEST SUITE: detect_test.sh
+  testExitStatus
+  testDetectedName
+
+  Ran 2 tests.
+
+  OK
+  0 SECONDS
+
+0 SECONDS
+
+------
+ALL OK
+0 SECONDS
+```
+
+
+## See also
+
+* [Yasuhiro Asaka / heroku-buildpack-make · GitLab:](
+    https://gitlab.com/grauwoelfchen/heroku-buildpack-make)
+
 
 ## Links
 
-* [Buildpack API | Heroku Dev Center](https://devcenter.heroku.com/articles/buildpack-api)
+* [Buildpack API | Heroku Dev Center](
+    https://devcenter.heroku.com/articles/buildpack-api)
+* [heroku/heroku-buildpack-testrunner: Unit testing framework for
+   Heroku buildpacks.](https://github.com/heroku/heroku-buildpack-testrunner).
 
 
 ## License
