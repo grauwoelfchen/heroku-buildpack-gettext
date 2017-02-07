@@ -36,7 +36,7 @@ cd gettext
 echo "-----> Compiling gettext"
 if [ -f configure ]; then
   echo "-----> Configuring"
-  ./configure --prefix=${GETTEXT_PREFIX} 2>&1 | ident
+  ./configure --prefix=${GETTEXT_PREFIX} 2>&1 | indent
 fi
 make
 make install
@@ -44,7 +44,7 @@ make install
 cd $BUILD_DIR
 
 
-"${GETTEXT_PREFIX}/bin/gettext" --version | ident
+"${GETTEXT_PREFIX}/bin/gettext" --version | indent
 
 echo "-----> Installing profile script"
 mkdir -p "${BUILD_DIR}/.profile.d"
