@@ -42,10 +42,9 @@ cd gettext
 echo "-----> Compiling gettext"
 if [ -f configure ]; then
   echo "-----> Configuring"
-  LDFLAGS="-L${GETTEXT_PREFIX}/lib" CPPFLAGS="-I${GETTEXT_PREFIX}/include" \
+  LT_SYS_LIBRARY_PATH="${HOME}/.heroku/gettext/usr/local/lib" \
     ./configure \
     --prefix=${GETTEXT_PREFIX} \
-    --oldincludedir=${GETTEXT_PREFIX}/include \
     2>&1 | indent
 fi
 make
