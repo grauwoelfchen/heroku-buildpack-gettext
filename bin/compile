@@ -18,19 +18,18 @@ indent() {
   sed -u 's/^/       /'
 }
 
-if [ -d ${HOME}/gettext ]; then
+if [ -d ${CACHE_DIR}/.heroku/gettext ]; then
   echo "GNU gettext is already installed"
   exit 0
 fi
 
 mkdir -p $GETTEXT_DIR
-mkdir -p ${CACHE_DIR}/.gettext
 
 cd $BUILD_DIR
 
 echo "-----> Fetching gettext"
-if [ -f ${CACHE_DIR}/.gettext/${GETTEXT_ARCHIVE} ]; then
-  cp ${CACHE_DIR}/.gettext/${GETTEXT_ARCHIVE} .
+if [ -f ${CACHE_DIR}/.heroku/gettext/${GETTEXT_ARCHIVE} ]; then
+  cp ${CACHE_DIR}/.heroku/gettext/${GETTEXT_ARCHIVE} .
 else
   curl -sLO --max-time 45 --location "${GETTEXT_LOCATION}"
 fi
@@ -60,10 +59,12 @@ cd $BUILD_DIR
 # > Heroku users can use the heroku-repo plugin to clear the build cache
 # > created by the buildpack they use for their app
 echo "-----> Creating cache"
-rm -fr ${CACHE_DIR}/.gettext
-mkdir -p ${CACHE_DIR}/.gettext
+rm -fr ${CACHE_DIR}/.heroku/gettext
+mkdir -p ${CACHE_DIR}/.heroku/
 
-mv ${GETTEXT_ARCHIVE} ${CACHE_DIR}/.gettext/
+cp -R ${GETTEXT_DIR} ${CACHE_DIR}/.heroku/
+
+mv ${GETTEXT_ARCHIVE} ${CACHE_DIR}/.heroku/gettext/ &> /dev/null || true
 
 echo "-----> Cleaning up source"
 rm -fr gettext
