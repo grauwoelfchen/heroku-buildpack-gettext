@@ -18,19 +18,30 @@ indent() {
   sed -u 's/^/       /'
 }
 
+echo "PWD: `pwd`"
+echo "HOME: ${HOME}"
+echo "BIN_DIR: ${BIN_DIR}"
+echo "ROOT_DIR: ${ROOT_DIR}"
+echo "BUILD_DIR: ${BUILD_DIR}"
+echo "CACHE_DIR: ${CACHE_DIR}"
+
+
+cd $BUILD_DIR
+
 if [ -d ${CACHE_DIR}/.heroku/gettext ]; then
-  echo "GNU gettext is already installed"
+  echo "GNU gettext is already installed" | indent
   exit 0
 fi
 
 mkdir -p $GETTEXT_DIR
 
-cd $BUILD_DIR
-
 echo "-----> Fetching gettext"
 if [ -f ${CACHE_DIR}/.heroku/gettext/${GETTEXT_ARCHIVE} ]; then
+  echo "location: ${CACHE_DIR}/.heroku/gettext/${GETTEXT_ARCHIVE} (cache)"\
+    | indent
   cp ${CACHE_DIR}/.heroku/gettext/${GETTEXT_ARCHIVE} .
 else
+  echo "location: ${GETTEXT_LOCATION}" | indent
   curl -sLO --max-time 45 --location "${GETTEXT_LOCATION}"
 fi
 
@@ -40,12 +51,11 @@ mv gettext-${GETTEXT_VERSION} gettext
 cd gettext
 
 echo "-----> Compiling gettext"
+export LD_LIBRARY_PATH="/app/.heroku/gettext/usr/local/lib"
+export LD_SYS_LIBRARY_PATH="/app/.heroku/gettext/usr/local/lib"
 if [ -f configure ]; then
   echo "-----> Configuring"
-  LT_SYS_LIBRARY_PATH="${HOME}/.heroku/gettext/usr/local/lib" \
-    ./configure \
-    --prefix=${GETTEXT_PREFIX} \
-    2>&1 | indent
+  ./configure --prefix=${GETTEXT_PREFIX} 2>&1 | indent
 fi
 make
 make install
