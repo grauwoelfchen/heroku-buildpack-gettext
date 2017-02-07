@@ -8,30 +8,34 @@ ROOT_DIR=$(dirname $BIN_DIR)
 BUILD_DIR=$1
 CACHE_DIR=$2
 
-echo $CACHE_DIR
-
-GETTEXT_PREFIX=${HOME}/.heroku/gettext/usr/local
+GETTEXT_DIR=${BUILD_DIR}/.heroku/gettext
+GETTEXT_PREFIX=${GETTEXT_DIR}/usr/local
 GETTEXT_VERSION=0.19.8.1
-GETTEXT_LOCATION=https://ftp.gnu.org/pub/gnu/gettext/\
-gettext-${GETTEXT_VERSION}.tar.gz
+GETTEXT_ARCHIVE=gettext-${GETTEXT_VERSION}.tar.gz
+GETTEXT_LOCATION=https://ftp.gnu.org/pub/gnu/gettext/${GETTEXT_ARCHIVE}
 
 indent() {
   sed -u 's/^/       /'
 }
 
-if [ -d ${CACHE_DIR}/gettext/usr/local ]; then
+if [ -d ${HOME}/.heroku/gettext ]; then
   echo "GNU gettext is already installed"
   exit 0
 fi
 
-mkdir -p ${HOME}/.heroku/gettext
-
+mkdir -p $GETTEXT_DIR
+mkdir -p ${CACHE_DIR}/.gettext
 
 cd $BUILD_DIR
 
 echo "-----> Fetching gettext"
-curl -sLO --max-time 45 --location "${GETTEXT_LOCATION}"
-tar zxf gettext-${GETTEXT_VERSION}.tar.gz
+if [ -f ${CACHE_DIR}/.gettext/${GETTEXT_ARCHIVE} ]; then
+  cp ${CACHE_DIR}/.gettext/${GETTEXT_ARCHIVE} .
+else
+  curl -sLO --max-time 45 --location "${GETTEXT_LOCATION}"
+fi
+
+tar zxf ${GETTEXT_ARCHIVE}
 mv gettext-${GETTEXT_VERSION} gettext
 
 cd gettext
@@ -44,22 +48,24 @@ fi
 make
 make install
 
+${GETTEXT_PREFIX}/bin/gettext --version | indent
+
 cd $BUILD_DIR
 
+# https://devcenter.heroku.com/articles/buildpack-api#caching
+# > Heroku users can use the heroku-repo plugin to clear the build cache
+# > created by the buildpack they use for their app
+echo "-----> Creating cache"
+rm -fr ${CACHE_DIR}/.gettext
+mkdir -p ${CACHE_DIR}/.gettext
 
-"${GETTEXT_PREFIX}/bin/gettext" --version | indent
+mv ${GETTEXT_ARCHIVE} ${CACHE_DIR}/.gettext/
+
+echo "-----> Cleaning up source"
+rm -fr gettext
 
 echo "-----> Installing profile script"
 mkdir -p "${BUILD_DIR}/.profile.d"
 cp ${ROOT_DIR}/profile/* ${BUILD_DIR}/.profile.d/
 
-
-# https://devcenter.heroku.com/articles/buildpack-api#caching
-# > Heroku users can use the heroku-repo plugin to clear the build cache
-# > created by the buildpack they use for their app
-mkdir -p $CACHE_DIR
-
-rm -fr $CACHE_DIR/.gettext
-mkdir -p $CACHE_DIR/.gettext
-
-cp -R ${HOME}/.heroku/gettext $CACHE_DIR/.gettext/
+exit 0
