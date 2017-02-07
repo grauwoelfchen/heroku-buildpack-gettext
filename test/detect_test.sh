@@ -2,8 +2,12 @@
 
 . ${BUILDPACK_TEST_RUNNER_HOME}/lib/test_utils.sh
 
-testName() {
+testExitStatus() {
   detect
   assertCapturedSuccess
-  assertCaptured "GNU gettext"
+}
+
+testDetectedName() {
+  detect
+  assertAppDetected "GNU gettext"
 }
