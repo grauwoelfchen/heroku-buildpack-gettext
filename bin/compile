@@ -8,20 +8,23 @@ ROOT_DIR=$(dirname $BIN_DIR)
 BUILD_DIR=$1
 CACHE_DIR=$2
 
-indent() {
-  sed -u 's/^/       /'
-}
+echo $CACHE_DIR
 
-GETTEXT_PREFIX=${HOME}/.gettext/usr/local
+GETTEXT_PREFIX=${HOME}/.heroku/gettext/usr/local
 GETTEXT_VERSION=0.19.8.1
 GETTEXT_LOCATION=https://ftp.gnu.org/pub/gnu/gettext/\
 gettext-${GETTEXT_VERSION}.tar.gz
 
+indent() {
+  sed -u 's/^/       /'
+}
 
-if [ -d ${CACHE_DIR}/.gettext/usr/local ]; then
+if [ -d ${CACHE_DIR}/gettext/usr/local ]; then
   echo "GNU gettext is already installed"
   exit 0
 fi
+
+mkdir -p ${HOME}/.heroku/gettext
 
 
 cd $BUILD_DIR
@@ -59,4 +62,4 @@ mkdir -p $CACHE_DIR
 rm -fr $CACHE_DIR/.gettext
 mkdir -p $CACHE_DIR/.gettext
 
-cp -R ${HOME}/.gettext $CACHE_DIR/
+cp -R ${HOME}/.heroku/gettext $CACHE_DIR/.gettext/
