@@ -18,7 +18,7 @@ indent() {
   sed -u 's/^/       /'
 }
 
-if [ -d ${HOME}/.heroku/gettext ]; then
+if [ -d ${HOME}/gettext ]; then
   echo "GNU gettext is already installed"
   exit 0
 fi
