@@ -18,14 +18,6 @@ indent() {
   sed -u 's/^/       /'
 }
 
-echo "PWD: `pwd`"
-echo "HOME: ${HOME}"
-echo "BIN_DIR: ${BIN_DIR}"
-echo "ROOT_DIR: ${ROOT_DIR}"
-echo "BUILD_DIR: ${BUILD_DIR}"
-echo "CACHE_DIR: ${CACHE_DIR}"
-
-
 cd $BUILD_DIR
 
 if [ -d ${CACHE_DIR}/.heroku/gettext ]; then
@@ -51,8 +43,6 @@ mv gettext-${GETTEXT_VERSION} gettext
 cd gettext
 
 echo "-----> Compiling gettext"
-export LD_LIBRARY_PATH="/app/.heroku/gettext/usr/local/lib"
-export LD_SYS_LIBRARY_PATH="/app/.heroku/gettext/usr/local/lib"
 if [ -f configure ]; then
   echo "-----> Configuring"
   ./configure --prefix=${GETTEXT_PREFIX} 2>&1 | indent
