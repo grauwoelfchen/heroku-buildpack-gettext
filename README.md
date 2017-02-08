@@ -4,19 +4,40 @@ This buildpack compile GNU gettext with gettext-tools from official gettext
 source code.
 As second time to build, it checks cache.
 
-Following binaries are installed.
+Following executable binaries are installed.
 
-```
-TODO
+```txt
+autopoint
+envsubst
+gettext
+gettextize
+gettext.sh
+msgattrib
+msgcat
+msgcmp
+msgcomm
+msgconv
+msgen
+msgexec
+msgfilter
+msgfmt
+msggrep
+msginit
+msgmerge
+msgunfmt
+msguniq
+ngettext
+recode-sr-latin
+xgettext
 ```
 
 ## GNU gettext
 
-`0.19.8.1`
+Current version is `0.19.8.1`.
 
 ```zsh
 % heroku run gettext --version
-Runnig gettext --version on XXXX...up, run.NNNN (XXXX)
+Runnig gettext --version on   XXXX...up, run.NNNN (XXXX)
 gettext (GNU gettext-runtime) 0.19.8.1
 Copyright (C) 1995-1997, 2000-2007 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
@@ -24,6 +45,29 @@ This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 Written by Ulrich Drepper.
 ```
+
+
+## Note
+
+`LD_LIBRARY_PATH` should be set to search run-time library.  
+It is done by [`.profile.d` script](
+https://devcenter.heroku.com/articles/buildpack-api#profile-d-scripts).
+This will be created by this buildpack.
+
+See `profile/heroku-buildpack-gettext.sh`
+
+```zsh
+# without LD_LIBRARY_PATH
+% heroku run ldd /app/.heroku/gettext/usr/local/bin/msgfmt
+Running ldd /app/.heroku/gettext/usr/local/bin/msgfmt on ⬢ XXXXX... up, run.NNNN (XXXX)
+        linux-vdso.so.1 =>  (0x00007ffc6a6b8000)
+        libgettextsrc-0.19.8.1.so => not found
+        libgettextlib-0.19.8.1.so => not found
+        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fe31c615000)
+        libpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007fe31c3f7000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007fe31c9da000)
+```
+
 
 ## Usage
 
