@@ -23,7 +23,7 @@ cd $BUILD_DIR
 if [ -d ${CACHE_DIR}/.heroku/gettext ]; then
   echo "GNU gettext is already installed" | indent
   mkdir -p ${BUILD_DIR}/.heroku/gettext
-  cp -R ${CACHE_DIR}/.heroku/gettext ${BUILD_DIR}/.heroku/gettext
+  cp -R ${CACHE_DIR}/.heroku/gettext/* ${BUILD_DIR}/.heroku/gettext/
   exit 0
 fi
 
