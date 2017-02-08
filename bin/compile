@@ -21,9 +21,16 @@ indent() {
 cd $BUILD_DIR
 
 if [ -d ${CACHE_DIR}/.heroku/gettext ]; then
-  echo "GNU gettext is already installed" | indent
+  echo "GNU gettext is already compiled" | indent
+
+  echo "-----> Copying compiled gettext from cache"
   mkdir -p ${BUILD_DIR}/.heroku/gettext
   cp -R ${CACHE_DIR}/.heroku/gettext/* ${BUILD_DIR}/.heroku/gettext/
+
+  echo "-----> Installing profile script"
+  mkdir -p "${BUILD_DIR}/.profile.d"
+  cp ${ROOT_DIR}/profile/* ${BUILD_DIR}/.profile.d/
+
   exit 0
 fi
 

@@ -8,7 +8,7 @@ test_cache_detection() {
   compile
 
   assertCapturedSuccess
-  assertCaptured "GNU gettext is already installed"
+  assertCaptured "GNU gettext is already compiled"
 }
 
 test_copy_compiled_binaries_from_cache() {
