@@ -22,16 +22,18 @@ cd $BUILD_DIR
 
 if [ -d ${CACHE_DIR}/.heroku/gettext ]; then
   echo "GNU gettext is already installed" | indent
+  mkdir -p ${BUILD_DIR}/.heroku/gettext
+  cp -R ${CACHE_DIR}/.heroku/gettext ${BUILD_DIR}/.heroku/gettext
   exit 0
 fi
 
 mkdir -p $GETTEXT_DIR
 
 echo "-----> Fetching gettext"
-if [ -f ${CACHE_DIR}/.heroku/gettext/${GETTEXT_ARCHIVE} ]; then
-  echo "location: ${CACHE_DIR}/.heroku/gettext/${GETTEXT_ARCHIVE} (cache)"\
+if [ -f ${CACHE_DIR}/${GETTEXT_ARCHIVE} ]; then
+  echo "location: ${CACHE_DIR}/${GETTEXT_ARCHIVE} (cache)"\
     | indent
-  cp ${CACHE_DIR}/.heroku/gettext/${GETTEXT_ARCHIVE} .
+  cp ${CACHE_DIR}/${GETTEXT_ARCHIVE} .
 else
   echo "location: ${GETTEXT_LOCATION}" | indent
   curl -sLO --max-time 45 --location "${GETTEXT_LOCATION}"
@@ -63,7 +65,7 @@ mkdir -p ${CACHE_DIR}/.heroku/
 
 cp -R ${GETTEXT_DIR} ${CACHE_DIR}/.heroku/
 
-mv ${GETTEXT_ARCHIVE} ${CACHE_DIR}/.heroku/gettext/ &> /dev/null || true
+mv ${GETTEXT_ARCHIVE} ${CACHE_DIR}/ &> /dev/null || true
 
 echo "-----> Cleaning up source"
 rm -fr gettext
