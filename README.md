@@ -73,7 +73,7 @@ Running ldd /app/.heroku/gettext/usr/local/bin/msgfmt on ⬢ XXXXX... up, run.NN
 
 ```zsh
 % cat .buildpacks
-https://gitlab.com/grauwoelfchen/heroku-buildpack-gettext#0.19.8.1
+https://gitlab.com/grauwoelfchen/heroku-buildpack-gettext#v0.1
 ...
 
 % git push heroku release:master
