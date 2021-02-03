@@ -33,13 +33,13 @@ xgettext
 
 ## GNU gettext
 
-Current version is `0.19.8.1`.
+Current version is `0.21`.
 
 ```zsh
 % heroku run gettext --version
 Runnig gettext --version on   XXXX...up, run.NNNN (XXXX)
-gettext (GNU gettext-runtime) 0.19.8.1
-Copyright (C) 1995-1997, 2000-2007 Free Software Foundation, Inc.
+gettext (GNU gettext-runtime) 0.21
+Copyright (C) 1995-2020 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -71,9 +71,11 @@ Running ldd /app/.heroku/gettext/usr/local/bin/msgfmt on ⬢ XXXXX... up, run.NN
 
 ## Usage
 
+Plesae put `<TAG>` as you need.
+
 ```zsh
 % cat .buildpacks
-https://gitlab.com/grauwoelfchen/heroku-buildpack-gettext#v0.1
+https://gitlab.com/grauwoelfchen/heroku-buildpack-gettext#<TAG>
 ...
 
 % git push heroku release:master
@@ -140,7 +142,7 @@ ALL OK
 
 See `LICENSE`.
 
-Copyright (c) 2017 Yasuhiro Asaka
+Copyright (c) 2017-2021 Yasuhiro Яша Asaka
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
