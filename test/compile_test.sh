@@ -24,7 +24,7 @@ test_copy_compiled_binaries_from_cache() {
 }
 
 test_fetch_source_code_from_url() {
-  VERSION="0.19.8.1"
+  VERSION="0.21"
   URL="https://ftp.gnu.org/pub/gnu/gettext/gettext-${VERSION}.tar.gz"
 
   compile
@@ -33,7 +33,7 @@ test_fetch_source_code_from_url() {
 }
 
 test_copy_soruce_code_from_cache() {
-  GETTEXT_VERSION=0.19.8.1
+  GETTEXT_VERSION=0.21
 
   compile
 
